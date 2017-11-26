@@ -31,13 +31,15 @@ namespace WindowsFormsApplication1
             m_dbConnection = new SQLiteConnection(@"Data Source=C:\Users\user\auto.db; Version=3;");
             m_dbConnection.Open();
 
-            if(searchDB("abcd1333") != FAILED)
-            {
-                Console.WriteLine("Success");
+            // if(searchByCardID("abcd1333") != FAILED)
+            // {
+            //     Console.WriteLine("Success");
 
-            }
-            else
-                Console.WriteLine("Fail");
+            // }
+            // else
+            //     Console.WriteLine("Fail");
+
+            updateUldegdel(156);
 
             listViewShow();
 
@@ -63,7 +65,7 @@ namespace WindowsFormsApplication1
         {
             //Serial portnoos irsen utgiig unshina
             //TODO: Databased baiga esehiig shalgana
-            int ret = searchDB("abcd1333");
+            int ret = searchByCardID("abcd1333");
             if(ret == FAILED)
             {
                 //TODO: iim IDtai hereglegch bhgu bna!!!
@@ -78,7 +80,7 @@ namespace WindowsFormsApplication1
             }
 
             //TODO: Duusagui bol database update hiine
-            //updateDB(ret - 1);  
+            updateUldegdel(ret - 1);  
         }
 
         void WriteTest()
@@ -153,7 +155,7 @@ namespace WindowsFormsApplication1
                 phoneLabel.Text = phone;
                 uldLabel.Text = uld;
             }
-        }// end fu
+        }
 
         void addUser()
         {
@@ -162,7 +164,7 @@ namespace WindowsFormsApplication1
             command.ExecuteNonQuery();
         }
 
-        int searchDB(string data)
+        int searchByCardID(string data)
         {
             string sql = String.Format("SELECT card_id, lname, name, phone, uld FROM users WHERE card_id = '{0}'", data);
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
@@ -176,11 +178,23 @@ namespace WindowsFormsApplication1
             return FAILED;
         }
 
+        void updateUldegdel(int value)
+        {
+            string ij = "huygaa";
+            string data = "abcd1333";//TODO: handler dotorh variable bolgono
+            string sql = String.Format("UPDATE users(name) VALUES (@ij) WHERE card_id='{0}'", data);
+            Console.WriteLine(sql);
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.Parameters.AddWithValue("@value", ij);
+            
+            command.ExecuteNonQuery();
+        }
+
         private void label2_Click(object sender, EventArgs e)
         {
 
         }
-
+        
         private void label4_Click(object sender, EventArgs e)
         {
 
