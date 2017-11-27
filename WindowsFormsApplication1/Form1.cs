@@ -182,10 +182,10 @@ namespace WindowsFormsApplication1
         {
             string ij = "huygaa";
             string data = "abcd1333";//TODO: handler dotorh variable bolgono
-            string sql = String.Format("UPDATE users(name) VALUES (@ij) WHERE card_id='{0}'", data);
+            string sql = String.Format("UPDATE users SET uld={0} WHERE card_id='{1}'", value, data);
             Console.WriteLine(sql);
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            command.Parameters.AddWithValue("@value", ij);
+            //command.Parameters.AddWithValue("@value", ij);
             
             command.ExecuteNonQuery();
         }
