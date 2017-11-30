@@ -55,7 +55,7 @@ namespace WindowsFormsApplication1
 
         private void test(string card_id)
         {
-            User user = searchByCardID(card_id);
+            User user = User.searchByCardID(card_id);
 
             // start
             if (user == null)
@@ -72,7 +72,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             user.Uld -= 1;
-            saveUser(user);
+            user.update();
 
             displayFunc(user);
             // end
@@ -82,7 +82,7 @@ namespace WindowsFormsApplication1
             //Serial portnoos irsen utgiig unshina
             //TODO: Databased baiga esehiig shalgana
             
-            User user = searchByCardID("abcd1333");
+            User user = User.searchByCardID("abcd1333");
             displayFunc(user);
 
             if (user == null)
@@ -176,45 +176,8 @@ namespace WindowsFormsApplication1
             }
         }
 
-        void addUserDB()
-        {
-            string sql = "INSERT INTO users (card_id, lname, name, phone, uld) VALUES ('8jjjk213', 'boldbaatar', 'bold', 89383399, 1)";
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            command.ExecuteNonQuery();
-        }
-
-        User searchByCardID(string card_id)
-        {
-            string sql = String.Format("SELECT id, card_id, lname, name, phone, uld FROM users WHERE card_id = '{0}'", card_id);
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                Console.WriteLine("Name: " + reader["name"] + "\tCARD_ID: " + reader["card_id"]);
-                User user = new User();
-                user.Id = Convert.ToInt32(reader["id"]);
-                user.CardId = reader["card_id"].ToString();
-                user.LastName = reader["lname"].ToString();
-                user.Name = reader["name"].ToString();
-                user.Phone = Convert.ToInt32(reader["phone"]);
-                user.Uld = Convert.ToInt32(reader["uld"]);
-                return user;
-            }
-
-            return null;
-        }
-
         
         // void updateUlupdegdel(int value)
-        
-        void saveUser(User user)
-        {
-            string sql = String.Format("UPDATE users SET lname='{0}', name='{1}', phone='{2}', uld='{3}' WHERE card_id='{4}'", user.LastName, user.Name, user.Phone, user.Uld, user.CardId);
-            Console.WriteLine(sql);
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            
-            command.ExecuteNonQuery();
-        }
 
         private void label2_Click(object sender, EventArgs e)
         {
@@ -233,7 +196,7 @@ namespace WindowsFormsApplication1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddUser adduser = new AddUser();
+            AddUserForm adduser = new AddUserForm();
             adduser.ShowDialog();
         }
     }

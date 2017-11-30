@@ -23,4 +23,4 @@ C:\Users\Guen\Documents\WindowsFormsApplication1\WindowsFormsApplication1\obj\De
 C:\Users\Guen\Documents\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
 C:\Users\Guen\Documents\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Alert.resources
 C:\Users\Guen\Documents\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.CardPresent.resources
-C:\Users\Guen\Documents\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.AddUser.resources
+C:\Users\Guen\Documents\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.AddUserForm.resources
