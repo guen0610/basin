@@ -21,26 +21,17 @@ namespace WindowsFormsApplication1
 
         SQLiteConnection m_dbConnection;
         static SerialPort mySerial;
-        private delegate void displayDelegate(string card, string lname, string name, string phone, string uld);
+        private delegate void displayDelegate(User user);
         displayDelegate displayFunc;
         public Form1()
         {
             InitializeComponent();
             displayFunc = displayText;
 
-            m_dbConnection = new SQLiteConnection(@"Data Source=C:\Users\user\auto.db; Version=3;");
+            m_dbConnection = new SQLiteConnection(@"Data Source=C:\Users\Guen\Documents\WindowsFormsApplication1\auto.db; Version=3;");
             m_dbConnection.Open();
 
-            // if(searchByCardID("abcd1333") != FAILED)
-            // {
-            //     Console.WriteLine("Success");
-
-            // }
-            // else
-            //     Console.WriteLine("Fail");
-
-            updateUldegdel(156);
-
+            test("abcd1333");
             listViewShow();
 
             mySerial = new SerialPort("COM4", 9600);
@@ -61,26 +52,54 @@ namespace WindowsFormsApplication1
             //System.Threading.Thread.Sleep(System.Threading.Timeout.Infinite);
         }
 
+
+        private void test(string card_id)
+        {
+            User user = searchByCardID(card_id);
+
+            // start
+            if (user == null)
+            {
+                MessageBox.Show("Хэрэглэгч бүртгэлгүй байна!");
+                return;
+            }
+
+            //TODO: Databased oldvol uldegdel ni duussan esehiig shalgana
+            if (user.Uld == 0)
+            {
+                //TODO: Uldegedel duussan bna!!!
+                MessageBox.Show("Үлдэгдэл дууссан байна!");
+                return;
+            }
+            user.Uld -= 1;
+            saveUser(user);
+
+            displayFunc(user);
+            // end
+        }
         private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
         {
             //Serial portnoos irsen utgiig unshina
             //TODO: Databased baiga esehiig shalgana
-            int ret = searchByCardID("abcd1333");
-            if(ret == FAILED)
+            
+            User user = searchByCardID("abcd1333");
+            displayFunc(user);
+
+            if (user == null)
             {
                 //TODO: iim IDtai hereglegch bhgu bna!!!
                 return;
             }
             
             //TODO: Databased oldvol uldegdel ni duussan esehiig shalgana
-            if(ret == 0)
+            if(user.Uld == 0)
             {
                 //TODO: Uldegedel duussan bna!!!
                 return;
             }
 
             //TODO: Duusagui bol database update hiine
-            updateUldegdel(ret - 1);  
+            // updateUldegdel(ret - 1);  
         }
 
         void WriteTest()
@@ -143,49 +162,56 @@ namespace WindowsFormsApplication1
             }
         }
 
-        void displayText(string card, string lname, string name, string phone, string uld)
+        void displayText(User user)
         {
             if (cardLabel.InvokeRequired)
-                cardLabel.Invoke(displayFunc, new object[] { card, lname, name, phone, uld });
+                cardLabel.Invoke(displayFunc, new object[] { user.CardId, user.LastName, user.Name, user.Phone, user.Uld });
             else
             {
-                cardLabel.Text = card;
-                lnameLabel.Text = lname;
-                nameLabel.Text = name;
-                phoneLabel.Text = phone;
-                uldLabel.Text = uld;
+                cardLabel.Text = user.CardId.ToString();
+                lnameLabel.Text = user.LastName;
+                nameLabel.Text = user.Name;
+                phoneLabel.Text = user.Phone.ToString();
+                uldLabel.Text = user.Uld.ToString();
             }
         }
 
-        void addUser()
+        void addUserDB()
         {
             string sql = "INSERT INTO users (card_id, lname, name, phone, uld) VALUES ('8jjjk213', 'boldbaatar', 'bold', 89383399, 1)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
 
-        int searchByCardID(string data)
+        User searchByCardID(string card_id)
         {
-            string sql = String.Format("SELECT card_id, lname, name, phone, uld FROM users WHERE card_id = '{0}'", data);
+            string sql = String.Format("SELECT id, card_id, lname, name, phone, uld FROM users WHERE card_id = '{0}'", card_id);
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
                 Console.WriteLine("Name: " + reader["name"] + "\tCARD_ID: " + reader["card_id"]);
-                displayFunc(reader["card_id"].ToString(), reader["lname"].ToString(), reader["name"].ToString(), reader["phone"].ToString(), reader["uld"].ToString());
-                return Convert.ToInt32(reader["uld"]);
+                User user = new User();
+                user.Id = Convert.ToInt32(reader["id"]);
+                user.CardId = reader["card_id"].ToString();
+                user.LastName = reader["lname"].ToString();
+                user.Name = reader["name"].ToString();
+                user.Phone = Convert.ToInt32(reader["phone"]);
+                user.Uld = Convert.ToInt32(reader["uld"]);
+                return user;
             }
-            return FAILED;
+
+            return null;
         }
 
-        void updateUldegdel(int value)
+        
+        // void updateUlupdegdel(int value)
+        
+        void saveUser(User user)
         {
-            string ij = "huygaa";
-            string data = "abcd1333";//TODO: handler dotorh variable bolgono
-            string sql = String.Format("UPDATE users SET uld={0} WHERE card_id='{1}'", value, data);
+            string sql = String.Format("UPDATE users SET lname='{0}', name='{1}', phone='{2}', uld='{3}' WHERE card_id='{4}'", user.LastName, user.Name, user.Phone, user.Uld, user.CardId);
             Console.WriteLine(sql);
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            //command.Parameters.AddWithValue("@value", ij);
             
             command.ExecuteNonQuery();
         }
@@ -205,6 +231,10 @@ namespace WindowsFormsApplication1
 
         }
 
-
+        private void button1_Click(object sender, EventArgs e)
+        {
+            AddUser adduser = new AddUser();
+            adduser.ShowDialog();
+        }
     }
 }
