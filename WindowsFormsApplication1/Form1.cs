@@ -12,6 +12,7 @@ using System.IO.Ports;
 using ReadWriteCsv;
 using System.Threading;
 using System.Data.SQLite;
+using System.Collections;
 
 namespace WindowsFormsApplication1
 {
@@ -20,6 +21,7 @@ namespace WindowsFormsApplication1
         SQLiteConnection m_dbConnection;
         static SerialPort mySerial;
         delegate void displayUserDelegate(User user);
+        delegate void populateLVDelegate();
 
         public Form1()
         {
@@ -28,9 +30,9 @@ namespace WindowsFormsApplication1
             m_dbConnection = new SQLiteConnection(@"Data Source=C:\Users\Guen\Documents\WindowsFormsApplication1\basin.db; Version=3;");
             m_dbConnection.Open();
 
-            listViewShow();
+            populateLV();
 
-            mySerial = new SerialPort("COM4", 9600);
+            mySerial = new SerialPort("COM9", 9600);
            
             mySerial.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
             SerialOpen();
@@ -88,13 +90,14 @@ namespace WindowsFormsApplication1
             {
                 //TODO: Uldegedel duussan bna!!!
                 Console.WriteLine("Uldegdel duussan baina!");
+                displayUser(user);
                 return;
             }
 
             user.Uld = user.Uld - 1;
             user.update();
             displayUser(user);
-
+            populateLV();
         }
 
         void SerialOpen()
@@ -120,24 +123,45 @@ namespace WindowsFormsApplication1
         void listViewShow()
         {
             listView1.Items.Clear();
-            // Read sample data from CSV file
-            using (CsvFileReader reader = new CsvFileReader("WriteTest.csv"))
-            {
-                CsvRow row = new CsvRow();
-                while (reader.ReadRow(row))
-                {
-                    ListViewItem lvi = new ListViewItem(row[0]);
-                    lvi.SubItems.Add(row[1]);
-                    lvi.SubItems.Add(row[2]);
-                    lvi.SubItems.Add(row[3]);
-                    lvi.SubItems.Add(row[4]);
-                    listView1.Items.Add(lvi);
-                   
-                }
-            }
+            
         }
 
 
+        private void populateLV()
+        {
+            if (this.listView1.InvokeRequired)
+            {
+                populateLVDelegate d = new populateLVDelegate(populateLV);
+                this.Invoke(d, new object[] { });
+            }
+            else
+            {
+                listView1.Items.Clear();
+                ArrayList aList = new ArrayList();
+                aList = User.getSqlReader();
+
+                try
+                {
+                    foreach (User user in aList)
+                    {
+                        ListViewItem item = new ListViewItem(user.Id.ToString());
+                        item.SubItems.Add(user.CardId.ToString());
+                        item.SubItems.Add(user.LastName);
+                        item.SubItems.Add(user.Name);
+                        item.SubItems.Add(user.Phone.ToString());
+                        item.SubItems.Add(user.Uld.ToString());
+                        listView1.Items.Add(item);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+
+
+            
+        }
 
         private void label2_Click(object sender, EventArgs e)
         {
@@ -157,18 +181,29 @@ namespace WindowsFormsApplication1
         private void button1_Click(object sender, EventArgs e)
         {
             mySerial.Close();
-            AddUserForm adduser = new AddUserForm();
-            adduser.ShowDialog();
+            using (AddUserForm adduser = new AddUserForm())
+            {
+                adduser.ShowDialog();
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Console.WriteLine("Form1 load");
         }
 
         private void Form1_Activated(object sender, EventArgs e)
         {
             SerialOpen();
+            populateLV();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            mySerial.Close();
+            using (Charge charge = new Charge())
+            {
+                charge.ShowDialog();
+            }
         }
     }
 }

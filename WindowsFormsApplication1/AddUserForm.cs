@@ -16,17 +16,27 @@ namespace WindowsFormsApplication1
     {
         static SerialPort mySerial;
         delegate void displayUserDelegate();
+        bool isCardPresentReady = false;
         public AddUserForm()
         {
             InitializeComponent();
             System.Text.RegularExpressions.Regex.IsMatch(lastNameTB.Text, "[ ^ 0-9]");
             mySerial = new SerialPort("COM4", 9600);
             mySerial.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
-            
+            try
+            {
+                mySerial.Open();
+                mySerial.DiscardInBuffer();
+                mySerial.DiscardOutBuffer();
+                Console.WriteLine("Serial opened");
+            }
+            catch
+            {
+                Console.WriteLine("Serial cant open");
+            }
 
-            
+
         }
-
 
         private void hideIndicator()
         {
@@ -45,37 +55,43 @@ namespace WindowsFormsApplication1
         }
         private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
         {
-            SerialPort sp = (SerialPort)sender;
-            string indata = sp.ReadLine();
-
-            indata = indata.Remove(indata.Length - 1); //removing last character \r from indata
-            User findingUser = User.searchByCardID(indata);
-
-            if (findingUser != null)
+            if (isCardPresentReady)
             {
-                //TODO: Burtgeltei kart bna!
-                Console.WriteLine("Burtgeltei kart bna");
-                return;
+                isCardPresentReady = false;
+                hideIndicator();
+
+                SerialPort sp = (SerialPort)sender;
+                string indata = sp.ReadLine();
+
+                indata = indata.Remove(indata.Length - 1); //removing last character \r from indata
+                User findingUser = User.searchByCardID(indata);
+
+                if (findingUser != null)
+                {
+                    //TODO: Burtgeltei kart bna!
+                    Console.WriteLine("Burtgeltei kart bna");
+                    return;
+                }
+
+                User addingUser = new User();
+                addingUser.CardId = indata;
+                addingUser.LastName = lastNameTB.Text;
+                addingUser.Name = nameTB.Text;
+                addingUser.Phone = Convert.ToInt32(phoneTB.Text);
+                addingUser.Uld = Convert.ToInt32(uldNUD.Value);
+                addingUser.insert();
+
+                
+                /*
+                User user = new User();
+                user.CardId = "dddd3232";
+                user.LastName = lastNameTB.Text;
+                user.Name = nameTB.Text;
+                user.Phone = Convert.ToInt32(phoneTB.Text);
+                user.Uld = Convert.ToInt32(uldNUD.Value);
+                user.insert();
+                cardIndicatorL.Visible = false; */
             }
-
-            User addingUser = new User();
-            addingUser.CardId = indata;
-            addingUser.LastName = lastNameTB.Text;
-            addingUser.Name = nameTB.Text;
-            addingUser.Phone = Convert.ToInt32(phoneTB.Text);
-            addingUser.Uld = Convert.ToInt32(uldNUD.Value);           
-            addingUser.insert();
-
-            hideIndicator();
-            /*
-            User user = new User();
-            user.CardId = "dddd3232";
-            user.LastName = lastNameTB.Text;
-            user.Name = nameTB.Text;
-            user.Phone = Convert.ToInt32(phoneTB.Text);
-            user.Uld = Convert.ToInt32(uldNUD.Value);
-            user.insert();
-            cardIndicatorL.Visible = false; */
         }
 
         private void label3_Click(object sender, EventArgs e)
@@ -90,20 +106,9 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Хэрэглэгчийн мэдээллийг бүрэн оруулна уу!");
                 return;
             }
-            try
-            {
-                mySerial.Open();
-                mySerial.DiscardInBuffer();
-                mySerial.DiscardOutBuffer();
-                Console.WriteLine("Serial opened");
-            }
-            catch
-            {
-                System.Threading.Thread.Sleep(3000);
-                Console.WriteLine("Serial cant open");
-            }
+            
             cardIndicatorL.Visible = true;
-           
+            isCardPresentReady = true;
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)

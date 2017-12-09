@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections;
 
 namespace WindowsFormsApplication1
 {
@@ -24,6 +25,37 @@ namespace WindowsFormsApplication1
 
         public int Uld { get; set; }
 
+        public static ArrayList getSqlReader()
+        {
+            using (SQLiteConnection m_dbConnection = new SQLiteConnection(connString))
+            {
+                m_dbConnection.Open();
+                string sql = "SELECT * FROM users";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                try
+                {
+                    SQLiteDataReader reader = reader = command.ExecuteReader();
+                    ArrayList aList = new ArrayList();
+                    while (reader.Read())
+                    {
+                        User user = new User();
+                        user.Id = Convert.ToInt32(reader["id"]);
+                        user.CardId = reader["card_id"].ToString();
+                        user.LastName = reader["lname"].ToString();
+                        user.Name = reader["name"].ToString();
+                        user.Phone = Convert.ToInt32(reader["phone"]);
+                        user.Uld = Convert.ToInt32(reader["uld"]);
+                        aList.Add(user);
+                    }
+                    return aList;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.ToString());
+                    return null;
+                }                            
+            }
+        }
         public static User searchByCardID(string card_id)
         {
             using (SQLiteConnection m_dbConnection = new SQLiteConnection(connString))
@@ -46,7 +78,7 @@ namespace WindowsFormsApplication1
                     user.Uld = Convert.ToInt32(reader["uld"]);
                     return user;
                 }
-                return null;
+                return null;              
             }
         }
 
@@ -87,5 +119,7 @@ namespace WindowsFormsApplication1
                 }
             }
         }
+
+        
     }
 }

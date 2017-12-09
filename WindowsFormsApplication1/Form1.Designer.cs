@@ -48,6 +48,9 @@
             this.columnUld = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.columnID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -103,85 +106,86 @@
             this.cardLabel.AutoSize = true;
             this.cardLabel.Location = new System.Drawing.Point(150, 35);
             this.cardLabel.Name = "cardLabel";
-            this.cardLabel.Size = new System.Drawing.Size(35, 13);
+            this.cardLabel.Size = new System.Drawing.Size(0, 13);
             this.cardLabel.TabIndex = 5;
-            this.cardLabel.Text = "label6";
             // 
             // lnameLabel
             // 
             this.lnameLabel.AutoSize = true;
             this.lnameLabel.Location = new System.Drawing.Point(150, 62);
             this.lnameLabel.Name = "lnameLabel";
-            this.lnameLabel.Size = new System.Drawing.Size(35, 13);
+            this.lnameLabel.Size = new System.Drawing.Size(0, 13);
             this.lnameLabel.TabIndex = 6;
-            this.lnameLabel.Text = "label7";
             // 
             // nameLabel
             // 
             this.nameLabel.AutoSize = true;
             this.nameLabel.Location = new System.Drawing.Point(150, 87);
             this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(35, 13);
+            this.nameLabel.Size = new System.Drawing.Size(0, 13);
             this.nameLabel.TabIndex = 7;
-            this.nameLabel.Text = "label8";
             // 
             // phoneLabel
             // 
             this.phoneLabel.AutoSize = true;
             this.phoneLabel.Location = new System.Drawing.Point(150, 112);
             this.phoneLabel.Name = "phoneLabel";
-            this.phoneLabel.Size = new System.Drawing.Size(35, 13);
+            this.phoneLabel.Size = new System.Drawing.Size(0, 13);
             this.phoneLabel.TabIndex = 8;
-            this.phoneLabel.Text = "label9";
             // 
             // uldLabel
             // 
             this.uldLabel.AutoSize = true;
             this.uldLabel.Location = new System.Drawing.Point(150, 135);
             this.uldLabel.Name = "uldLabel";
-            this.uldLabel.Size = new System.Drawing.Size(41, 13);
+            this.uldLabel.Size = new System.Drawing.Size(0, 13);
             this.uldLabel.TabIndex = 9;
-            this.uldLabel.Text = "label10";
             // 
             // listView1
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnID,
             this.columnCard,
             this.columnLname,
             this.columnName,
             this.columnPhone,
             this.columnUld});
+            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
-            this.listView1.Location = new System.Drawing.Point(235, 27);
+            this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(451, 265);
+            this.listView1.Size = new System.Drawing.Size(651, 304);
             this.listView1.TabIndex = 10;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             // 
             // columnCard
             // 
-            this.columnCard.Text = "ID";
-            this.columnCard.Width = 83;
+            this.columnCard.Text = "Картын дугаар";
+            this.columnCard.Width = 175;
             // 
             // columnLname
             // 
+            this.columnLname.DisplayIndex = 1;
             this.columnLname.Text = "Овог";
             this.columnLname.Width = 109;
             // 
             // columnName
             // 
+            this.columnName.DisplayIndex = 2;
             this.columnName.Text = "Нэр";
             this.columnName.Width = 115;
             // 
             // columnPhone
             // 
+            this.columnPhone.DisplayIndex = 3;
             this.columnPhone.Text = "Утас";
             this.columnPhone.Width = 81;
             // 
             // columnUld
             // 
+            this.columnUld.DisplayIndex = 4;
             this.columnUld.Text = "Үлдэгдэл";
             // 
             // button1
@@ -202,15 +206,29 @@
             this.button2.TabIndex = 12;
             this.button2.Text = "Карт цэнэглэх";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // columnID
+            // 
+            this.columnID.Text = "ID";
+            this.columnID.Width = 40;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.listView1);
+            this.panel1.Location = new System.Drawing.Point(231, 12);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(651, 304);
+            this.panel1.TabIndex = 13;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(734, 340);
+            this.ClientSize = new System.Drawing.Size(897, 340);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.listView1);
             this.Controls.Add(this.uldLabel);
             this.Controls.Add(this.phoneLabel);
             this.Controls.Add(this.nameLabel);
@@ -225,6 +243,7 @@
             this.Text = "Form1";
             this.Activated += new System.EventHandler(this.Form1_Activated);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -251,6 +270,8 @@
         private System.Windows.Forms.ColumnHeader columnUld;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ColumnHeader columnID;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 
