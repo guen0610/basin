@@ -196,6 +196,7 @@ namespace WindowsFormsApplication1
 
         private void button1_Click(object sender, EventArgs e)
         {
+            mySerial.Close();
             AddUserForm adduser = new AddUserForm();
             adduser.ShowDialog();
         }
