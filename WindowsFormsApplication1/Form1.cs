@@ -31,18 +31,9 @@ namespace WindowsFormsApplication1
             listViewShow();
 
             mySerial = new SerialPort("COM4", 9600);
+           
             mySerial.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
-            try
-            {
-                mySerial.Open();
-                Console.WriteLine("Serial opened");
-            }
-            catch
-            {
-                System.Threading.Thread.Sleep(3000);
-                RestartApp();
-                Console.WriteLine("Serial cant open");
-            }
+            SerialOpen();
         }
 
 
@@ -79,7 +70,7 @@ namespace WindowsFormsApplication1
         }
     
         private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
-        {
+        {    
             SerialPort sp = (SerialPort)sender;
             string indata = sp.ReadLine();
 
@@ -104,6 +95,26 @@ namespace WindowsFormsApplication1
             user.update();
             displayUser(user);
 
+        }
+
+        void SerialOpen()
+        {
+            try
+            {
+                if (!mySerial.IsOpen)
+                {
+                    mySerial.Open();
+                    mySerial.DiscardInBuffer();
+                    mySerial.DiscardOutBuffer();
+                    Console.WriteLine("Serial opened");
+                }
+            }
+            catch
+            {
+                System.Threading.Thread.Sleep(3000);
+                RestartApp();
+                Console.WriteLine("Serial cant open");
+            }
         }
 
         void listViewShow()
@@ -148,6 +159,16 @@ namespace WindowsFormsApplication1
             mySerial.Close();
             AddUserForm adduser = new AddUserForm();
             adduser.ShowDialog();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Console.WriteLine("Form1 load");
+        }
+
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+            SerialOpen();
         }
     }
 }

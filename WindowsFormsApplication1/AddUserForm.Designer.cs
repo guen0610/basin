@@ -164,6 +164,7 @@
             this.MinimizeBox = false;
             this.Name = "AddUserForm";
             this.Text = "Хэрэглэгч нэмэх";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AddUserForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.uldNUD)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

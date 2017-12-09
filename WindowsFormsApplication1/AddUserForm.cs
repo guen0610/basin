@@ -19,10 +19,12 @@ namespace WindowsFormsApplication1
         public AddUserForm()
         {
             InitializeComponent();
-            mySerial.E
             System.Text.RegularExpressions.Regex.IsMatch(lastNameTB.Text, "[ ^ 0-9]");
             mySerial = new SerialPort("COM4", 9600);
             mySerial.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
+            
+
+            
         }
 
 
@@ -88,10 +90,11 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Хэрэглэгчийн мэдээллийг бүрэн оруулна уу!");
                 return;
             }
-            cardIndicatorL.Visible = true;
             try
             {
                 mySerial.Open();
+                mySerial.DiscardInBuffer();
+                mySerial.DiscardOutBuffer();
                 Console.WriteLine("Serial opened");
             }
             catch
@@ -99,6 +102,8 @@ namespace WindowsFormsApplication1
                 System.Threading.Thread.Sleep(3000);
                 Console.WriteLine("Serial cant open");
             }
+            cardIndicatorL.Visible = true;
+           
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -123,6 +128,12 @@ namespace WindowsFormsApplication1
             {
                 e.Handled = true;
             }
+        }
+
+        private void AddUserForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Console.WriteLine("Closing");
+            mySerial.Close();
         }
     }
 }
