@@ -32,12 +32,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.lastNameTB = new System.Windows.Forms.TextBox();
+            this.nameTB = new System.Windows.Forms.TextBox();
+            this.phoneTB = new System.Windows.Forms.TextBox();
+            this.uldNUD = new System.Windows.Forms.NumericUpDown();
             this.button1 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.cardIndicatorL = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.uldNUD)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -77,45 +78,45 @@
             this.label4.TabIndex = 3;
             this.label4.Text = "Үлдэгдэл";
             // 
-            // textBox1
+            // lastNameTB
             // 
-            this.textBox1.Location = new System.Drawing.Point(101, 29);
-            this.textBox1.MaxLength = 20;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(120, 20);
-            this.textBox1.TabIndex = 4;
-            this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
+            this.lastNameTB.Location = new System.Drawing.Point(101, 29);
+            this.lastNameTB.MaxLength = 20;
+            this.lastNameTB.Name = "lastNameTB";
+            this.lastNameTB.Size = new System.Drawing.Size(120, 20);
+            this.lastNameTB.TabIndex = 4;
+            this.lastNameTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
-            // textBox2
+            // nameTB
             // 
-            this.textBox2.Location = new System.Drawing.Point(101, 58);
-            this.textBox2.MaxLength = 20;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(120, 20);
-            this.textBox2.TabIndex = 5;
-            this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
+            this.nameTB.Location = new System.Drawing.Point(101, 58);
+            this.nameTB.MaxLength = 20;
+            this.nameTB.Name = "nameTB";
+            this.nameTB.Size = new System.Drawing.Size(120, 20);
+            this.nameTB.TabIndex = 5;
+            this.nameTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
             // 
-            // textBox3
+            // phoneTB
             // 
-            this.textBox3.Location = new System.Drawing.Point(101, 88);
-            this.textBox3.MaxLength = 8;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(120, 20);
-            this.textBox3.TabIndex = 6;
-            this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox3_KeyPress);
+            this.phoneTB.Location = new System.Drawing.Point(101, 88);
+            this.phoneTB.MaxLength = 8;
+            this.phoneTB.Name = "phoneTB";
+            this.phoneTB.Size = new System.Drawing.Size(120, 20);
+            this.phoneTB.TabIndex = 6;
+            this.phoneTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox3_KeyPress);
             // 
-            // numericUpDown1
+            // uldNUD
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(101, 118);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.uldNUD.Location = new System.Drawing.Point(101, 118);
+            this.uldNUD.Maximum = new decimal(new int[] {
             12,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown1.TabIndex = 7;
-            this.numericUpDown1.Value = new decimal(new int[] {
+            this.uldNUD.Name = "uldNUD";
+            this.uldNUD.Size = new System.Drawing.Size(120, 20);
+            this.uldNUD.TabIndex = 7;
+            this.uldNUD.Value = new decimal(new int[] {
             12,
             0,
             0,
@@ -132,16 +133,28 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // cardIndicatorL
+            // 
+            this.cardIndicatorL.AutoSize = true;
+            this.cardIndicatorL.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.cardIndicatorL.Location = new System.Drawing.Point(50, 267);
+            this.cardIndicatorL.Name = "cardIndicatorL";
+            this.cardIndicatorL.Size = new System.Drawing.Size(147, 25);
+            this.cardIndicatorL.TabIndex = 9;
+            this.cardIndicatorL.Text = "Карт таниулах";
+            this.cardIndicatorL.Visible = false;
+            // 
             // AddUserForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(261, 335);
+            this.Controls.Add(this.cardIndicatorL);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.uldNUD);
+            this.Controls.Add(this.phoneTB);
+            this.Controls.Add(this.nameTB);
+            this.Controls.Add(this.lastNameTB);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -151,7 +164,7 @@
             this.MinimizeBox = false;
             this.Name = "AddUserForm";
             this.Text = "Хэрэглэгч нэмэх";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uldNUD)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -163,10 +176,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.TextBox lastNameTB;
+        private System.Windows.Forms.TextBox nameTB;
+        private System.Windows.Forms.TextBox phoneTB;
+        private System.Windows.Forms.NumericUpDown uldNUD;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label cardIndicatorL;
     }
 }

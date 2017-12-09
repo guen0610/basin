@@ -4,12 +4,13 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace WindowsFormsApplication1
 {
     class User
     {
-        private static string connString = @"Data Source=C:\Users\Guen\Documents\WindowsFormsApplication1\auto.db; Version=3;";
+        private static string connString = @"Data Source=C:\Users\Guen\Documents\WindowsFormsApplication1\basin.db; Version=3;";
 
         public int Id { get; set; }
 
@@ -30,11 +31,12 @@ namespace WindowsFormsApplication1
                 m_dbConnection.Open();
 
                 string sql = String.Format("SELECT id, card_id, lname, name, phone, uld FROM users WHERE card_id = '{0}'", card_id);
+                Console.WriteLine(sql);
                 SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    Console.WriteLine("Name: " + reader["name"] + "\tCARD_ID: " + reader["card_id"]);
+                    //Console.WriteLine("Name: " + reader["name"] + "\tCARD_ID: " + reader["card_id"]);
                     User user = new User();
                     user.Id = Convert.ToInt32(reader["id"]);
                     user.CardId = reader["card_id"].ToString();
@@ -55,7 +57,7 @@ namespace WindowsFormsApplication1
             {
                 m_dbConnection.Open();
 
-                string sql = String.Format("UPDATE users SET lname='{0}', name='{1}', phone='{2}', uld='{3}' WHERE card_id='{4}'", this.LastName, this.Name, this.Phone, this.Uld, this.CardId);
+                string sql = String.Format("UPDATE users SET card_id = '{0}', lname='{1}', name='{2}', phone='{3}', uld='{4}' WHERE card_id='{5}'", this.CardId, this.LastName, this.Name, this.Phone, this.Uld, this.CardId);
                 Console.WriteLine(sql);
                 SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
 
@@ -70,10 +72,19 @@ namespace WindowsFormsApplication1
                 m_dbConnection.Open();
 
                 string sql = String.Format("INSERT INTO users (card_id,lname,name,phone,uld) VALUES ('{0}', '{1}', '{2}', {3}, {4})", this.CardId, this.LastName, this.Name, this.Phone, this.Uld);
-                Console.WriteLine(sql);
+                //Console.WriteLine(sql);
                 SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
 
-                command.ExecuteNonQuery();
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("Амжилттай боллоо");
+                }
+                catch (System.Data.SQLite.SQLiteException e)
+                {
+                    Console.WriteLine(e.ToString());
+                    MessageBox.Show("Алдаа гарлаа! Бүртгэлтэй карт байж магадгүй");
+                }
             }
         }
     }
